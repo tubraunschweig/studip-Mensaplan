@@ -89,8 +89,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-1"));
-				echo $template->render();
-
 				break;
 
 			case "360": //mensa 360°
@@ -99,8 +97,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/360-2"));
-				echo $template->render();
-
 				break;
 
 			case "bth": //mensa Bethovenstraße
@@ -109,8 +105,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-2"));
-				echo $template->render();
-
 				break;
 
 			case "hbk": //mensa HBK
@@ -119,8 +113,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-hbk"));
-				echo $template->render();
-
 				break;
 
 			case "kth_next": //mensa Katharinenstraße
@@ -129,8 +121,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-1-kommende-woche"));
-				echo $template->render();
-
 				break;
 
 			case "360_next": //mensa 360°
@@ -139,8 +129,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/360-nachste-woche"));
-				echo $template->render();
-
 				break;
 
 			case "bth_next": //mensa Bethovenstraße
@@ -149,8 +137,6 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-2-kommende-woche"));
-				echo $template->render();
-
 				break;
 
 			case "hbk_next": //mensa HBK
@@ -159,18 +145,13 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-hbk-kommende-woche"));
-				echo $template->render();
-
 				break;
 				
 			case "all": //today food
 				Navigation::activateItem("/mensa/all");
-                var_dump(PageLayout::getTabNavigation()->activeSubnavigation()->getTitle());
 
 				$template = $template_factory->open("today");
 				$template->set_attribute("html", $this->parseTodayAll());
-				echo $template->render();
-
 				break;
 
 			default: //default is kth
@@ -179,10 +160,10 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-1"));
-				echo $template->render();
-
 				break;
 		}
+        $template->set_layout($GLOBALS['template_factory']->open('layouts/base'));
+        echo $template->render();
 	}
 
 	private function parseMensa($url) {
