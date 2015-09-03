@@ -2,4 +2,4 @@
 build:
 	rm -f Archive.zip
 
-	zip -r Archive.zip css/ images/ templates/ VideoTUBS.php plugin.manifest
+	zip -r Archive.zip css/ images/ templates/ MensaTUBS.php plugin.manifest
