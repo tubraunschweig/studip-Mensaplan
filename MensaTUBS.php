@@ -25,6 +25,7 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 		$nav_bth = new Navigation("Mensa 2", PluginEngine::getURL("MensaTUBS"), array("mensa" => "bth"));
 		$nav_hbk = new Navigation("HBK Mensa", PluginEngine::getURL("MensaTUBS"), array("mensa" => "hbk"));
 		$nav_360 = new navigation("360 Grad", PluginEngine::getURL("MensaTUBS"), array("mensa" => "360"));
+        $nav_b4u = new navigation("Bistro4u NFF", PluginEngine::getURL("MensaTUBS"), array("mensa" => "b4u"));
 		$nav_all = new Navigation("Heute", PluginEngine::getURL("MensaTUBS"), array("mensa" => "all"));
 
 		//initialize sub navs
@@ -35,6 +36,7 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 		Navigation::addItem("/mensa/360", $nav_360);
 		Navigation::addItem("/mensa/bth", $nav_bth);
 		Navigation::addItem("/mensa/hbk", $nav_hbk);
+        Navigation::addItem("/mensa/b4u", $nav_b4u);
 
 
 		$nav_head->addSubNavigation("all", $nav_all);
@@ -42,6 +44,7 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 		$nav_head->addSubNavigation("360", $nav_360);
 		$nav_head->addSubNavigation("bth", $nav_bth);
 		$nav_head->addSubNavigation("hbk", $nav_hbk);
+        $nav_head->addSubNavigation("b4u", $nav_b4u);
 
 		//sub sub navigations
 		$nav_kth_this = new Navigation("Diese Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "kth"));
@@ -52,12 +55,16 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 		$nav_hbk_next = new Navigation("N&#228;chste Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "hbk_next"));
 		$nav_360_this = new Navigation("Diese Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "360"));
 		$nav_360_next = new Navigation("N&#228;chste Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "360_next"));
+        $nav_b4u_this = new Navigation("Diese Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "b4u"));
+        $nav_b4u_next = new Navigation("N&#228;chste Woche", PluginEngine::getURL("MensaTUBS"), array("mensa" => "b4u_next"));
 
-		//init sub sub navs
+
+        //init sub sub navs
 		$nav_kth_item = Navigation::getItem("/mensa/kth");
 		$nav_360_item = Navigation::getItem("/mensa/360");
 		$nav_bth_item = Navigation::getItem("/mensa/bth");
 		$nav_hbk_item = Navigation::getItem("/mensa/hbk");
+        $nav_b4u_item = Navigation::getItem("/mensa/b4u");
 		$nav_kth_item->addSubNavigation("this", $nav_kth_this);
 		$nav_kth_item->addSubNavigation("next", $nav_kth_next);
 		$nav_360_item->addSubNavigation("this", $nav_360_this);
@@ -66,6 +73,8 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 		$nav_bth_item->addSubNavigation("next", $nav_bth_next);
 		$nav_hbk_item->addSubNavigation("this", $nav_hbk_this);
 		$nav_hbk_item->addSubNavigation("next", $nav_hbk_next);
+        $nav_b4u_item->addSubNavigation("this", $nav_b4u_this);
+        $nav_b4u_item->addSubNavigation("next", $nav_b4u_next);
 
 
 		PageLayout::addHeadElement('link', array("rel" => "stylesheet", "href" => $this->getPluginURL()."/css/main.css", "type" => "text/css"));
@@ -115,6 +124,14 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-hbk"));
 				break;
 
+            case "b4u": //mensa HBK
+
+                Navigation::activateItem("/mensa/b4u/this");
+
+                $template = $template_factory->open("generic");
+                $template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/bistro4u-nff"));
+                break;
+
 			case "kth_next": //mensa Katharinenstraße
 				
 				Navigation::activateItem("/mensa/kth/next");
@@ -146,6 +163,14 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 				$template = $template_factory->open("generic");
 				$template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/mensa-hbk-kommende-woche"));
 				break;
+
+            case "b4u_next": //mensa HBK
+
+                Navigation::activateItem("/mensa/b4u/next");
+
+                $template = $template_factory->open("generic");
+                $template->set_attribute("html", $this->parseMensa("http://www.stw-on.de/braunschweig/essen/menus/bistro4u-nff-kommende-woche"));
+                break;
 				
 			case "all": //today food
 				Navigation::activateItem("/mensa/all");
@@ -229,6 +254,7 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 				$dayInWeek = "so";
 				break;
 		}
+        $tables = array();
 
 		$html = file_get_html("http://www.stw-on.de/braunschweig/essen/menus/mensa-1");
 		foreach($html->find("table#swbs_speiseplan_".$dayInWeek) as $table) {
@@ -243,9 +269,13 @@ class MensaTUBS extends StudipPlugin implements SystemPlugin {
 			$tables["Mensa 2"] .= $table;
 		}
 		$html = file_get_html("http://www.stw-on.de/braunschweig/essen/menus/mensa-hbk");
-		foreach($html->find("table#swbs_speiseplan_".$dayInWeek) as $table) {
-			$tables["Mensa HBK"] .= $table;
-		}
+        foreach($html->find("table#swbs_speiseplan_".$dayInWeek) as $table) {
+            $tables["Mensa HBK"] .= $table;
+        }
+        $html = file_get_html("http://www.stw-on.de/braunschweig/essen/menus/bistro4u-nff");
+        foreach($html->find("table#swbs_speiseplan_".$dayInWeek) as $table) {
+            $tables["Bistro4u NFF"] .= $table;
+        }
 
 		if(!isset($tables)){
 			$tables["<b>Die Mensa hat heute geschlossen</b>"];
