@@ -1,0 +1,29 @@
+.swbs_speiseplan img {
+    display: none;
+}
+
+table.swbs_speiseplan {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse !important;
+}
+
+tr.swbs_speiseplan_head_tr {
+    background-color: #e7ebf1;
+}
+
+td.swbs_speiseplan_kind_meal {
+    width: 10em;
+}
+
+td.swbs_speiseplan_price_s, td.swbs_speiseplan_price_e, td.swbs_speiseplan_price_g {
+    width: 5em;
+}
+
+tr.swbs_speiseplan_white {
+    background-color: #f8f8f8;
+}
+
+tr.swbs_speiseplan_grey {
+    background-color: #eeeeee;
+}

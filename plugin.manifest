@@ -1,5 +1,6 @@
 pluginname=Mensaplan
 pluginclassname=MensaTUBS
+pluginclassname=MensaTUBSWidget
 origin=tu-braunschweig
 version=0.1.2
 studipMinVersion=2.4
